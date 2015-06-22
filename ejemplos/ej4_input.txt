@@ -1,0 +1,130 @@
+// ---------
+// El Choclo
+// ---------
+
+#tempo negra 60
+#compas 2/4
+
+// Octavas donde se mueve la primera voz
+const oct1 = 6;
+const oct2 = 5;
+
+// Instrumentos
+const piano = 0;
+
+voz (piano)
+{
+	compas
+	{
+		silencio(negra);
+
+		silencio(semicorchea);
+		nota(mi, oct2, semicorchea);
+		nota(mi, oct2, semicorchea);
+		nota(fa, oct2, semicorchea);
+	}
+
+	compas
+	{
+		nota(fa, oct2, semicorchea);
+		nota(mi, oct2, semicorchea);
+		nota(mi, oct2, semicorchea);
+		nota(la, oct2, semicorchea);
+
+		nota(la, oct2, semicorchea);
+		nota(do, oct1, semicorchea);
+		nota(do, oct2, semicorchea);
+		nota(fa, oct2, semicorchea);
+	}
+
+	compas
+	{
+		nota(fa, oct1, semicorchea);
+		silencio(semicorchea);
+		nota(mi, oct1, semicorchea);
+		silencio(semicorchea);
+
+		silencio(semicorchea);
+		nota(mi, oct1, semicorchea);
+		nota(mi, oct1, semicorchea);
+		nota(la, oct1, semicorchea);
+	}
+
+	compas
+	{
+		nota(la, oct1, semicorchea);
+		nota(mi, oct1, semicorchea);
+		nota(mi, oct1, semicorchea);
+		nota(do, oct1, semicorchea);
+
+		nota(do, oct1, semicorchea);
+		nota(re, oct1, semicorchea);
+		nota(re, oct1, semicorchea);
+		nota(do, oct1, semicorchea);
+	}
+
+	compas
+	{
+		nota(do, oct1, semicorchea);
+		silencio(semicorchea);
+		nota(si, oct2, semicorchea);
+		silencio(semicorchea);
+
+		silencio(semicorchea);
+		nota(mi, oct2, semicorchea);
+		nota(mi, oct2, semicorchea);
+		nota(fa, oct2, semicorchea);
+	}
+
+	compas
+	{
+		nota(fa, oct2, semicorchea);	
+		nota(mi, oct2, semicorchea);
+		nota(mi, oct2, semicorchea);
+		nota(sol+, oct2, semicorchea);
+
+		nota(sol+, oct2, semicorchea);
+		nota(si, oct2, semicorchea);
+		nota(si, oct2, semicorchea);
+		nota(fa, oct1, semicorchea);
+	}
+
+	compas
+	{
+		nota(fa, oct1, semicorchea);
+		silencio(semicorchea);
+		nota(mi, oct1, semicorchea);
+		silencio(semicorchea);
+
+		silencio(semicorchea);
+		nota(mi, oct1, semicorchea);
+		nota(re+, oct1, semicorchea);
+		nota(mi, oct1, semicorchea);
+	}
+
+	compas
+	{
+		nota(si, oct1, semicorchea);
+		nota(sol+, oct1, semicorchea);
+		nota(sol+, oct1, semicorchea);
+		nota(mi, oct1, semicorchea);
+
+		nota(mi, oct1, semicorchea);
+		nota(re, oct1, semicorchea);
+		nota(re, oct1, semicorchea);
+		nota(do, oct1, semicorchea);	
+	}
+
+	compas
+	{
+		nota(si, oct1, semicorchea);
+		silencio(semicorchea);
+		nota(la, oct1, semicorchea);
+		silencio(semicorchea);
+
+		silencio(semicorchea);
+		nota(mi, oct1, semicorchea);
+		nota(re+, oct1, semicorchea);
+		nota(mi, oct1, semicorchea);	
+	}
+}

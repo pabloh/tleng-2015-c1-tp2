@@ -1,0 +1,12 @@
+\contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{3}
+\contentsline {section}{\numberline {2}Implementaci\IeC {\'o}n.}{3}
+\contentsline {subsection}{\numberline {2.1}Representaci\IeC {\'o}n Aut\IeC {\'o}mata}{3}
+\contentsline {subsection}{\numberline {2.2}Lectura Expresion Regular}{3}
+\contentsline {subsection}{\numberline {2.3}Conversion AFND a AFD}{3}
+\contentsline {subsection}{\numberline {2.4}Lectura de AFD desde archivo de entrada}{3}
+\contentsline {subsection}{\numberline {2.5}Generaci\IeC {\'o}n de archivo .dot}{4}
+\contentsline {subsection}{\numberline {2.6}Minimizaci\IeC {\'o}n}{4}
+\contentsline {subsection}{\numberline {2.7}Intersecci\IeC {\'o}n de Aut\IeC {\'o}matas}{5}
+\contentsline {subsection}{\numberline {2.8}Complemento}{5}
+\contentsline {subsection}{\numberline {2.9}Equivalencia de Aut\IeC {\'o}matas}{5}
+\contentsline {section}{\numberline {3}Conclusiones}{5}

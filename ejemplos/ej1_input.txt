@@ -1,0 +1,131 @@
+// ----------------
+// Scarborough Fair
+// ----------------
+
+#tempo negra 120
+#compas 3/4
+
+const oct1 = 5;
+const oct2 = 6;
+
+// Instrumentos
+const clarinete = 71;
+
+voz (clarinete)
+{
+	compas
+	{
+		nota(re, oct1, blanca);
+		nota(re, oct1, negra);
+	}
+
+	compas
+	{
+		nota(la, oct1, blanca);
+		nota(la, oct1, negra);
+	}
+
+	compas
+	{
+		nota(mi, oct1, negra.);
+		nota(fa, oct1, corchea);
+		nota(mi, oct1, negra);
+	}
+
+	compas
+	{
+		nota(re, oct1, blanca.);
+	}
+
+	// ------------------------------
+
+	compas
+	{
+		silencio(negra);
+		nota(la, oct1, negra);
+		nota(do, oct2, negra);
+	}
+
+	compas
+	{
+		nota(re, oct2, blanca);
+		nota(do, oct2, negra);
+	}
+
+	compas
+	{
+		nota(la, oct1, negra);
+		nota(si, oct1, negra);
+		nota(sol, oct1, negra);
+	}
+
+	compas
+	{
+		nota(la, oct1, blanca.);
+	}
+
+	// ------------------------------
+
+	compas
+	{
+		silencio(blanca);
+		nota(re, oct2, negra);
+	}
+
+	compas
+	{
+		nota(re, oct2, blanca);
+		nota(re, oct2, negra);
+	}
+
+	compas
+	{
+		nota(do, oct2, blanca);
+		nota(la, oct1, negra);
+	}
+
+	compas
+	{
+		nota(la, oct1, negra);
+		nota(sol, oct1, negra);
+		nota(fa, oct1, negra);
+	}
+
+	compas
+	{
+		nota(mi, oct1, negra);
+		nota(do, oct1, blanca);
+	}
+
+	compas
+	{
+		silencio(blanca.);
+	}
+
+	// ------------------------------
+	
+	compas
+	{
+		nota(re, oct1, blanca);
+		nota(la, oct1, negra);
+	}
+
+	compas
+	{
+		nota(sol, oct1, blanca);
+		nota(fa, oct1, negra);
+	}
+
+	compas
+	{
+		nota(mi, oct1, negra);
+		nota(re, oct1, negra);
+		nota(do, oct1, negra);
+	}
+
+	compas
+	{
+		nota(re, oct1, blanca.);
+	}
+
+}

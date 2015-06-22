@@ -1,0 +1,282 @@
+// -------------
+// Bach - Minuet
+// -------------
+
+#tempo negra 100
+#compas 3/4
+
+const oct1 = 6;
+const oct2 = 5;
+const oct3 = 4;
+const oct4 = 3;
+
+// Instrumentos
+const piano = 0;
+
+voz (piano)
+{
+	repetir (2)
+	{
+		compas
+		{
+			nota(re, oct1, negra);
+			nota(sol, oct2, corchea);
+			nota(la, oct2, corchea);
+			nota(si, oct2, corchea);
+			nota(do, oct1, corchea);
+		}
+
+		compas
+		{
+			nota(re, oct1, negra);
+			nota(sol, oct2, corchea);
+			silencio(corchea);
+			nota(sol, oct2, corchea);
+			silencio(corchea);
+		}
+
+		compas
+		{
+			nota(mi, oct1, negra);
+			nota(do, oct1, corchea);
+			nota(re, oct1, corchea);
+			nota(mi, oct1, corchea);
+			nota(fa+, oct1, corchea);
+		}
+
+		compas
+		{
+			nota(sol, oct1, negra);
+			nota(sol, oct2, corchea);
+			silencio(corchea);
+			nota(sol, oct2, corchea);
+			silencio(corchea);
+		}
+
+		compas
+		{
+			nota(do, oct1, negra);
+			nota(re, oct1, corchea);
+			nota(do, oct1, corchea);
+			nota(si, oct2, corchea);
+			nota(la, oct2, corchea);
+		}	
+
+		compas
+		{
+			nota(si, oct2, negra);
+			nota(do, oct1, corchea);
+			nota(si, oct2, corchea);
+			nota(la, oct2, corchea);
+			nota(sol, oct2, corchea);
+		}	
+
+		compas
+		{
+			nota(fa+, oct2, negra);
+			nota(sol, oct2, corchea);
+			nota(la, oct2, corchea);
+			nota(si, oct2, corchea);
+			nota(sol, oct2, corchea);
+		}	
+
+		compas
+		{
+			nota(la, oct2, blanca.);
+		}
+
+		// -----------------------------------------
+		// (esto es casi igual a lo anterior, pero cambia el final)
+
+		compas
+		{
+			nota(re, oct1, negra);
+			nota(sol, oct2, corchea);
+			nota(la, oct2, corchea);
+			nota(si, oct2, corchea);
+			nota(do, oct1, corchea);
+		}
+
+		compas
+		{
+			nota(re, oct1, negra);
+			nota(sol, oct2, corchea);
+			silencio(corchea);
+			nota(sol, oct2, corchea);
+			silencio(corchea);
+		}
+
+		compas
+		{
+			nota(mi, oct1, negra);
+			nota(do, oct1, corchea);
+			nota(re, oct1, corchea);
+			nota(mi, oct1, corchea);
+			nota(fa+, oct1, corchea);
+		}
+
+		compas
+		{
+			nota(sol, oct1, negra);
+			nota(sol, oct2, corchea);
+			silencio(corchea);
+			nota(sol, oct2, corchea);
+			silencio(corchea);
+		}
+
+		compas
+		{
+			nota(do, oct1, negra);
+			nota(re, oct1, corchea);
+			nota(do, oct1, corchea);
+			nota(si, oct2, corchea);
+			nota(la, oct2, corchea);
+		}	
+
+		compas
+		{
+			nota(si, oct2, negra);
+			nota(do, oct1, corchea);
+			nota(si, oct2, corchea);
+			nota(la, oct2, corchea);
+			nota(sol, oct2, corchea);
+		}	
+
+		compas
+		{
+			nota(la, oct2, negra);
+			nota(si, oct2, corchea);
+			nota(la, oct2, corchea);
+			nota(sol, oct2, corchea);
+			nota(fa+, oct2, corchea);
+		}	
+
+		compas
+		{
+			nota(sol, oct2, blanca.);
+		}
+	}
+}
+
+voz (piano)
+{
+	compas
+	{
+		nota(sol, oct3, blanca);	
+		nota(la, oct3, negra);
+	}
+
+	compas
+	{
+		nota(si, oct3, blanca.);
+	}
+
+	compas
+	{
+		nota(do, oct2, blanca.);
+	}
+
+	compas
+	{
+		nota(si, oct3, blanca.);
+	}
+
+	compas
+	{
+		nota(la, oct3, blanca);
+		nota(fa+, oct3, negra);
+	}
+
+	compas
+	{
+		nota(sol, oct3, blanca);
+		nota(do, oct2, negra);
+	}
+
+	compas
+	{
+		nota(re, oct2, corchea);
+		silencio(corchea);
+		nota(si, oct3, corchea);
+		silencio(corchea);
+		nota(sol, oct3, corchea);
+		silencio(corchea);
+	}
+
+	compas
+	{
+		nota(re, oct2, negra);
+		nota(re, oct3, corchea);
+		nota(do, oct2, corchea);
+		nota(si, oct3, corchea);
+		nota(la, oct3, corchea);
+	}
+
+	compas
+	{
+		nota(si, oct3, blanca);
+		nota(la, oct3, negra);
+	}
+
+	compas
+	{
+		nota(sol, oct3, negra);
+		nota(si, oct3, corchea);
+		silencio(corchea);
+		nota(sol, oct3, corchea);
+		silencio(corchea);
+	}
+
+	compas
+	{
+		nota(do, oct2, blanca.);
+	}
+
+	compas
+	{
+		nota(si, oct3, negra);
+		nota(do, oct2, corchea);
+		nota(si, oct3, corchea);
+		nota(la, oct3, corchea);
+		nota(sol, oct3, corchea);
+	}
+
+	compas
+	{
+		nota(la, oct3, blanca);
+		nota(fa+, oct3, negra);
+	}
+
+	compas
+	{
+		nota(sol, oct3, blanca);
+		nota(si, oct3, negra);
+	}
+
+	compas
+	{
+		nota(do, oct2, corchea);
+		silencio(corchea);
+		nota(re, oct2, corchea);
+		silencio(corchea);
+		nota(re, oct3, corchea);
+		silencio(corchea);
+	}
+
+	compas
+	{
+		nota(sol, oct3, blanca);
+		nota(sol, oct4, negra);
+	}
+}
+
+// Esta voz esta solo para hacer el acorde del primer compas
+// Si no validamos que todas las voces tengan la misma cantidad 
+// de compases anda. Si no se puede volar directamente esta voz...
+voz (piano)
+{
+	compas
+	{
+		nota(si, oct3, blanca.);	
+	}
+}

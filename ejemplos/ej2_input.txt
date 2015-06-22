@@ -1,0 +1,199 @@
+// -----------------------
+// Aria - Madama Butterfly
+// -----------------------
+
+// 1 negra por seg.
+#tempo negra 60 // 40
+#compas 3/4
+
+// Octavas donde se mueve la primera voz
+const oct1 = 6;
+const oct2 = 5;
+
+// Octavas donde se mueve la voz de abajo
+const oct3 = 4;
+const oct4 = 3;
+
+// Instrumentos
+const violin = 40;
+const piano = 0;
+
+voz (violin)
+{
+	compas
+	{
+		nota(fa, oct1, negra.); // 384 + 192
+		nota(re, oct1, corchea); // 192
+		nota(fa, oct1, corchea); // 192
+		nota(re, oct1, corchea); // 192
+	}
+
+	compas
+	{
+		nota(mi, oct1, negra.);
+		nota(do, oct1, semicorchea);
+		nota(re, oct1, semicorchea);
+		nota(mi, oct1, corchea);
+		nota(do, oct1, corchea);
+	}
+
+	compas
+	{
+		nota(re, oct1, negra.);
+		nota(la, oct2, corchea);
+		nota(re, oct1, corchea);
+		nota(la, oct2, corchea);
+	}
+
+	compas
+	{
+		nota(do, oct1, negra);
+		nota(do, oct1, negra);
+		nota(re, oct1, corchea);
+		nota(do, oct1, corchea);
+	}
+
+	compas
+	{
+		nota(sol, oct2, negra.);
+		nota(mi, oct2, semicorchea);
+		nota(fa, oct2, semicorchea);
+		nota(sol, oct2, corchea);
+		nota(mi, oct2, corchea);
+	}
+
+	compas
+	{
+		nota(la, oct2, negra);
+		nota(la, oct2, negra);
+		nota(sol, oct2, corchea);
+		nota(fa, oct2, corchea);
+	}
+
+	compas
+	{
+		nota(do, oct2, negra.);
+
+		nota(do, oct2, semicorchea);
+		nota(re, oct2, semicorchea);
+		nota(mi, oct2, corchea);
+		nota(do, oct2, corchea);
+	}
+
+	compas
+	{
+		nota(fa, oct2, blanca.);
+	}
+}
+
+// Acompañamiento
+voz (piano)
+{
+	compas
+	{
+		nota(fa, oct3, negra);
+		nota(la, oct3, blanca);
+	}
+
+	compas
+	{
+		nota(fa, oct3, negra);
+		nota(sol, oct3, blanca);	
+	}
+
+	compas
+	{
+		nota(fa, oct3, negra);
+		nota(la, oct3, blanca);
+	}
+
+	compas
+	{
+		nota(fa, oct3, negra);
+		nota(sol, oct3, negra);
+		silencio(negra);	
+	}
+
+	compas
+	{
+		nota(sol, oct3, negra);
+		nota(si-, oct3, negra);
+		silencio(negra);
+	}
+
+	compas
+	{
+		nota(la, oct3, negra);
+		nota(do, oct2, negra);
+		silencio(negra);
+	}
+
+	compas
+	{
+		nota(si-, oct4, negra);
+		nota(la, oct4, negra);
+		nota(sol, oct4, negra);
+	}
+
+	compas
+	{
+		nota(fa, oct4, blanca.);
+	}
+
+}
+
+// Voz 2 de acompañamiento (para hacer los acordes)
+voz (piano)
+{
+	compas
+	{
+		silencio(negra);
+		nota(do, oct2, blanca);
+	}
+
+	compas
+	{
+		silencio(negra);
+		nota(si-, oct3, blanca);
+	}
+
+	compas
+	{
+		silencio(negra);
+		nota(re, oct2, blanca);
+	}
+
+	compas
+	{
+		silencio(negra);
+		nota(si-, oct3, negra);
+		silencio(negra);
+	}
+
+	compas
+	{
+		silencio(negra);
+		nota(re, oct2, negra);
+		silencio(negra);
+	}
+
+	compas
+	{
+		silencio(negra);
+		nota(mi, oct2, negra);
+		silencio(negra);
+	}
+
+	compas
+	{
+		nota(do, oct4, negra);
+		nota(do, oct4, negra);
+		nota(do, oct4, negra);
+	}
+
+	compas
+	{
+		silencio(negra);
+		nota(do, oct4, blanca);
+	}
+}
