@@ -55,3 +55,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Ply
+src/parser.out
+src/parsetab.py
