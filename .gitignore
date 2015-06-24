@@ -59,3 +59,7 @@ target/
 # Ply
 src/*/parser.out
 src/*/parsetab.py
+
+# Vim files
+*.swp
+*.swo
