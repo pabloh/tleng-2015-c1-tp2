@@ -19,7 +19,7 @@ class TestMusilengLexer(unittest.TestCase):
         return res
 
     def assertTokens(self, data, tokens):
-        self.assertEqual(self.tokens(data), tokens)
+        self.assertEqual(tokens, self.tokens(data))
 
     def test_keywords(self):
         self.assertTokens('tempo const voz repetir nota silencio', [('TEMPO', 'tempo'), ('CONST', 'const'), ('VOZ', 'voz'), ('REPETIR', 'repetir'), ('NOTA', 'nota'), ('SILENCIO', 'silencio')])
@@ -28,6 +28,7 @@ class TestMusilengLexer(unittest.TestCase):
     def test_directives(self):
         self.assertTokens('#tempo redonda 60', [('HASH', '#'), ('TEMPO', 'tempo'), ('NOTE_VALUE', 'redonda'), ('NUMBER', 60)])
         self.assertTokens('#compas 3/4', [('HASH', '#'), ('COMPAS', 'compas'), ('NUMBER', 3), ('SLASH', '/'), ('NUMBER', 4)])
+        self.assertTokens('#compas 1 / 8', [('HASH', '#'), ('COMPAS', 'compas'), ('NUMBER', 1), ('SLASH', '/'), ('NUMBER', 8)])
 
 
     def test_const_declaration(self):
