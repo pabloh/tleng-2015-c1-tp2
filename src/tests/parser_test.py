@@ -11,8 +11,8 @@ class TestMusilengParser(unittest.TestCase):
         cls.parser = yacc.yacc(module=musileng.parser)
 
     def setUp(self):
-        self.lexer = self.__class__.lexer
-        self.parser = self.__class__.parser
+        self.lexer = type(self).lexer
+        self.parser = type(self).parser
 
         self.simple_def = """
             #tempo negra 60
@@ -25,10 +25,39 @@ class TestMusilengParser(unittest.TestCase):
             }
         """
 
+        self.simple_def_w_consts = """
+            #tempo negra 60
+            #compas 2/4
+
+            const octava1 = 1;
+            const octava2 = 2;
+            const piano = 23;
+
+            voz(piano) {
+                compas {
+                    nota(do, octava1, blanca);
+                }
+            }
+        """
+
+        self.simple_def_missing_consts = """
+            #tempo negra 60
+            #compas 2/4
+
+            const octava2 = 2;
+            const piano = 23;
+
+            voz(piano) {
+                compas {
+                    nota(do, octava1, blanca);
+                }
+            }
+        """
+
     def parse(self, text):
         return self.parser.parse(text, self.lexer)
 
-    def test_header(self):
+    def test_directives(self):
         mus = self.parse(self.simple_def)
 
         self.assertIsInstance(mus, MusiLeng)
@@ -42,9 +71,27 @@ class TestMusilengParser(unittest.TestCase):
 
         self.assertEqual(1, len(mus.voices))
         self.assertIsInstance(mus.voices[0], Voice)
-        self.assertEqual(3, mus.voices[0].instrument.value_for({}))
+        self.assertEqual(3, mus.voices[0].instrument.value())
         self.assertEqual(1, len(mus.voices[0].bars))
         self.assertIsInstance(mus.voices[0].bars[0], Bar)
+
+
+    def test_consts(self):
+        mus = self.parse(self.simple_def_w_consts)
+        symbols = mus.consts
+
+        self.assertEqual({'octava1' : 1, 'octava2' : 2, 'piano' : 23}, symbols)
+        self.assertEqual(23, mus.voices[0].instrument.value(symbols))
+        self.assertEqual(1, mus.voices[0].bars[0].notes[0].octave.value(symbols))
+
+        mus.check_symbols()
+
+
+    def test_missing_consts(self):
+        mus = self.parse(self.simple_def_missing_consts)
+
+        with self.assertRaises(UndeclaredSymbol, msg="Identificador 'octava1' no declarado previamente"):
+            mus.check_symbols()
 
 
 if __name__ == '__main__':

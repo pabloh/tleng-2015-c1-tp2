@@ -50,7 +50,7 @@ def p_voice_content(subs):
 
 def p_compas(subs):
     'compas : COMPAS LBRACKET compas_content RBRACKET'
-    subs[0] = Bar(subs[4])
+    subs[0] = Bar(subs[3])
 
 
 def p_compas_content(subs):
