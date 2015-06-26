@@ -67,6 +67,9 @@ class Silence(Node):
     def __init__(self, duration):
         self.duration = duration
 
+    def __eq__(self, other):
+        return (isinstance(other, Silence) and self.duration == other.duration)
+
 
 class Duration(Node):
     def __init__(self, note_value, dotted=False):
