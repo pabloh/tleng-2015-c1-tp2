@@ -2,6 +2,7 @@ import unittest
 import musileng.parser
 import musileng.lexer
 from musileng.ast import *
+from musileng.validations import *
 from ply import lex, yacc
 
 class TestMusilengParser(unittest.TestCase):
@@ -13,6 +14,7 @@ class TestMusilengParser(unittest.TestCase):
     def setUp(self):
         self.lexer = type(self).lexer
         self.parser = type(self).parser
+        self.symbols_checker = ValidateSymbolsReference()
 
         self.simple_def = """
             #tempo negra 60
@@ -84,14 +86,14 @@ class TestMusilengParser(unittest.TestCase):
         self.assertEqual(23, mus.voices[0].instrument.value(symbols))
         self.assertEqual(1, mus.voices[0].bars[0].notes[0].octave.value(symbols))
 
-        mus.check_symbols()
+        self.symbols_checker.visit(mus)
 
 
     def test_missing_consts(self):
         mus = self.parse(self.simple_def_missing_consts)
 
         with self.assertRaises(UndeclaredSymbol, msg="Identificador 'octava1' no declarado previamente"):
-            mus.check_symbols()
+            self.symbols_checker.visit(mus)
 
 
 if __name__ == '__main__':

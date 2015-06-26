@@ -1,22 +1,12 @@
 from fractions import Fraction
 
-
 class Node:
-    def check_symbols(self, table): pass
+    def accept(self, visitor):
+        getattr(visitor, 'visit_type_' + type(self).__name__)(self)
 
 class MusiLeng(Node):
     def __init__(self, tempo_dir, bar_dir, consts, voices):
-        self.tempo = tempo_dir
-        self.bar = bar_dir
-        self.consts = consts
-        self.voices = voices
-
-    def semantically_analize(self):
-        self.check_symbols()
-
-    def check_symbols(self):
-        for voice in self.voices:
-            voice.check_symbols(self.consts)
+        self.tempo, self.bar, self.consts, self.voices = tempo_dir, bar_dir, consts, voices
 
     def build_midi(self):
         pass
@@ -35,10 +25,6 @@ class Const(Node):
 
     def value(self, symbol_table):
         return symbol_table.get(self.identifier)
-
-    def check_symbols(self, table):
-        if not self.identifier in table:
-            raise UndeclaredSymbol(self.identifier)
 
 
 class TempoDirective(Node):
@@ -59,9 +45,6 @@ class Note(Node):
 
     def __eq__(self, other):
         return (isinstance(other, Note) and self.pitch == other.pitch and self.octave == other.octave and self.duration == other.duration)
-
-    def check_symbols(self, symbol_table):
-        self.octave.check_symbols(symbol_table)
 
 class Silence(Node):
     def __init__(self, duration):
@@ -90,34 +73,17 @@ class Container(Node):
     def __init__(self, childs):
         self.childs = childs
 
-    def check_symbols(self, symbol_table):
-        for child in self.childs:
-            child.check_symbols(symbol_table)
-
 class Voice(Container):
     def __init__(self, instrument, bars):
         super().__init__(bars)
         self.instrument, self.bars = instrument, bars
-
-    def check_symbols(self, symbol_table):
-        self.instrument.check_symbols(symbol_table)
-        super().check_symbols(symbol_table)
 
 class Repeat(Container):
     def __init__(self, times, childs):
         super().__init__(childs)
         self.times = times
 
-    def check_symbols(self, symbol_table):
-        self.times.check_symbols(symbol_table)
-        super().check_symbols(symbol_table)
-
 class Bar(Container):
     def __init__(self, notes):
         super().__init__(notes)
         self.notes = notes
-
-
-class UndeclaredSymbol(Exception):
-    def __init__(self, name):
-        self.msg = "Identificador '{}' no declarado previamente".format(name)
