@@ -19,15 +19,11 @@ def p_compas_directive(subs):
 def p_constants(subs):
     """constants : constant constants
                  | """
-    if len(subs) == 3:
-        subs[0] = subs[2]
-        subs[0].update(subs[1])
-    else:
-        subs[0] = {}
+    subs[0] = [subs[1]] + subs[2] if len(subs) == 3 else []
 
 def p_constant(subs):
     'constant : CONST ID EQUALS NUMBER SEMICOLON'
-    subs[0] = { subs[2] : subs[4] }
+    subs[0] = ConstDecl(subs[2], subs[4])
 
 
 def p_voices(subs):
@@ -78,9 +74,9 @@ def p_numeric_value(subs):
     '''numeric_value : NUMBER
                      | ID'''
     if type(subs[1]) == int:
-        subs[0] = Number(subs[1])
+        subs[0] = Literal(subs[1])
     else:
-        subs[0] = Const(subs[1])
+        subs[0] = ConstRef(subs[1])
 
 def p_duration(subs):
     '''duration : NOTE_VALUE

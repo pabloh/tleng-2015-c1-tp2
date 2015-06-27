@@ -8,18 +8,21 @@ class MusiLeng(Node):
     def __init__(self, tempo_dir, bar_dir, consts, voices):
         self.tempo, self.bar, self.consts, self.voices = tempo_dir, bar_dir, consts, voices
 
+    def symbol_table(self):
+        return { const.identifier : const.number for const in self.consts }
+
     def build_midi(self):
         pass
 
 
-class Number(Node):
-    def __init__(self, literal):
-        self.literal = literal
+class Literal(Node):
+    def __init__(self, number):
+        self.number = number
 
     def value(self, symbol_table = {}):
-        return self.literal
+        return self.number
 
-class Const(Node):
+class ConstRef(Node):
     def __init__(self, identifier):
         self.identifier = identifier
 
@@ -37,6 +40,10 @@ class BarDirective(Node):
 
     def fraction(self):
         return Fraction(self.pulses, self.note_value)
+
+class ConstDecl(Node):
+    def __init__(self, identifier, number):
+        self.identifier, self.number = identifier, number
 
 
 class Note(Node):

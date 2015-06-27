@@ -56,6 +56,21 @@ class TestMusilengParser(unittest.TestCase):
             }
         """
 
+        self.simple_def_redeclared_consts = """
+            #tempo negra 60
+            #compas 2/4
+
+            const octava2 = 2;
+            const piano = 23;
+            const octava2 = 4;
+
+            voz(piano) {
+                compas {
+                    nota(do, octava1, blanca);
+                }
+            }
+        """
+
     def parse(self, text):
         return self.parser.parse(text, self.lexer)
 
@@ -80,7 +95,7 @@ class TestMusilengParser(unittest.TestCase):
 
     def test_consts(self):
         mus = self.parse(self.simple_def_w_consts)
-        symbols = mus.consts
+        symbols = mus.symbol_table()
 
         self.assertEqual({'octava1' : 1, 'octava2' : 2, 'piano' : 23}, symbols)
         self.assertEqual(23, mus.voices[0].instrument.value(symbols))
@@ -92,7 +107,14 @@ class TestMusilengParser(unittest.TestCase):
     def test_missing_consts(self):
         mus = self.parse(self.simple_def_missing_consts)
 
-        with self.assertRaises(UndeclaredSymbol, msg="Identificador 'octava1' no declarado previamente"):
+        with self.assertRaises(UndeclaredSymbol, msg="'octava1' no fue declarado"):
+            self.symbols_checker.visit(mus)
+
+
+    def test_redeclared_consts(self):
+        mus = self.parse(self.simple_def_redeclared_consts)
+
+        with self.assertRaises(RedeclaredSymbol, msg="'octava2' ya fue declarado previamente"):
             self.symbols_checker.visit(mus)
 
 
