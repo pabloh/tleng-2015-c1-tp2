@@ -1,87 +1,66 @@
 import unittest
-import musileng.parser
-import musileng.lexer
+from tests.helpers import TestMusilengBase
 from musileng.ast import *
-from musileng.validations import *
-from ply import lex, yacc
+from musileng.semantic_analysis import *
 
-class TestMusilengParser(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.lexer = lex.lex(module=musileng.lexer)
-        cls.parser = yacc.yacc(module=musileng.parser)
-
+class TestMusilengParser(TestMusilengBase):
     def setUp(self):
-        self.lexer = type(self).lexer
-        self.parser = type(self).parser
-        self.symbols_checker = ValidateSymbolsReference()
+        super().setUp()
 
-        self.simple_def = """
-            #tempo negra 60
+        self.invalid_tempo_def = """
+            #tempo negra 0
             #compas 2/4
 
-            voz(3) {
-                compas {
-                    nota(do, 1, blanca);
-                }
+            voz(0) { compas { nota(do, 1, blanca); } }
+        """
+
+        self.invalid_bar_pulses_def = """
+            #tempo negra 60
+            #compas 0/4
+
+            voz(0) { compas { nota(do, 1, blanca); } }
+        """
+
+        self.invalid_bar_base_def = """
+            #tempo negra 60
+            #compas 2/3
+
+            voz(0) { compas { nota(do, 1, blanca); } }
+        """
+
+        voice = """
+            voz(0) {
+                compas { nota(do, 1, blanca); }
             }
         """
 
-        self.simple_def_w_consts = """
-            #tempo negra 60
-            #compas 2/4
+        self.too_many_voices_def = self.simple_header + voice * 17
 
-            const octava1 = 1;
-            const octava2 = 2;
-            const piano = 23;
 
-            voz(piano) {
-                compas {
-                    nota(do, octava1, blanca);
-                }
-            }
-        """
-
-        self.simple_def_missing_consts = """
-            #tempo negra 60
-            #compas 2/4
-
-            const octava2 = 2;
-            const piano = 23;
-
-            voz(piano) {
-                compas {
-                    nota(do, octava1, blanca);
-                }
-            }
-        """
-
-        self.simple_def_redeclared_consts = """
-            #tempo negra 60
-            #compas 2/4
-
-            const octava2 = 2;
-            const piano = 23;
-            const octava2 = 4;
-
-            voz(piano) {
-                compas {
-                    nota(do, octava1, blanca);
-                }
-            }
-        """
-
-    def parse(self, text):
-        return self.parser.parse(text, self.lexer)
-
-    def test_directives(self):
+    def test_valid_directives(self):
         mus = self.parse(self.simple_def)
+        tempo_dur = mus.tempo.reference_note
 
         self.assertIsInstance(mus, MusiLeng)
+        self.assertIsInstance(mus.bar, BarDirective)
+        self.assertIsInstance(mus.tempo, TempoDirective)
         self.assertEqual(Fraction(2,4), mus.bar.fraction())
         self.assertEqual(60, mus.tempo.notes_per_min)
-        self.assertEqual(Duration('negra'), mus.tempo.reference_note)
+        self.assertIsInstance(tempo_dur, Duration)
+        self.assertEqual('negra', tempo_dur.note_value)
+        self.assertFalse(tempo_dur.dotted)
 
+    def test_invalid_tempo(self):
+        with self.assertRaises(InvalidTempo):
+            self.parse(self.invalid_tempo_def)
+
+    def test_invalid_bar_pulses(self):
+        with self.assertRaises(InvalidBarPulses):
+            self.parse(self.invalid_bar_pulses_def)
+
+    def test_invalid_bar_base(self):
+        with self.assertRaises(InvalidBarBase):
+            self.parse(self.invalid_bar_base_def)
 
     def test_voice(self):
         mus = self.parse(self.simple_def)
@@ -89,33 +68,20 @@ class TestMusilengParser(unittest.TestCase):
         self.assertEqual(1, len(mus.voices))
         self.assertIsInstance(mus.voices[0], Voice)
         self.assertEqual(3, mus.voices[0].instrument.value())
-        self.assertEqual(1, len(mus.voices[0].bars))
-        self.assertIsInstance(mus.voices[0].bars[0], Bar)
+        self.assertEqual(1, len(mus.voices[0].childs))
+        self.assertIsInstance(mus.voices[0].childs[0], Bar)
 
+    def test_too_many_voices(self):
+        with self.assertRaises(TooManyVoices):
+            self.parse(self.too_many_voices_def)
 
-    def test_consts(self):
+    def test_number_refs(self):
         mus = self.parse(self.simple_def_w_consts)
-        symbols = mus.symbol_table()
+        symbols = self.symbol_table(mus)
 
-        self.assertEqual({'octava1' : 1, 'octava2' : 2, 'piano' : 23}, symbols)
         self.assertEqual(23, mus.voices[0].instrument.value(symbols))
-        self.assertEqual(1, mus.voices[0].bars[0].notes[0].octave.value(symbols))
-
-        self.symbols_checker.visit(mus)
-
-
-    def test_missing_consts(self):
-        mus = self.parse(self.simple_def_missing_consts)
-
-        with self.assertRaises(UndeclaredSymbol, msg="'octava1' no fue declarado"):
-            self.symbols_checker.visit(mus)
-
-
-    def test_redeclared_consts(self):
-        mus = self.parse(self.simple_def_redeclared_consts)
-
-        with self.assertRaises(RedeclaredSymbol, msg="'octava2' ya fue declarado previamente"):
-            self.symbols_checker.visit(mus)
+        self.assertEqual(1, mus.voices[0].childs[0].notes[0].octave.value(symbols))
+        self.assertEqual(2, mus.voices[0].childs[0].notes[1].octave.value(symbols))
 
 
 if __name__ == '__main__':

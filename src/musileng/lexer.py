@@ -38,7 +38,7 @@ tokens = (
 
 
 def t_NUMBER(token):
-    r'[1-9][0-9]*'
+    r'[0-9]+'
     token.value = int(token.value)
     return token
 
@@ -71,12 +71,15 @@ t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
 
 
+t_ignore = " \t"
+
+def t_COMMENT(token):
+    r'//[^\n]*\n'
+    token.lexer.lineno += 1
+
 def t_NEWLINE(token):
     r'\n+'
     token.lexer.lineno += len(token.value)
-
-t_ignore = " \t"
-t_ignore_COMMENT = r'//[^\n]*\n'
 
 
 def t_error(token):

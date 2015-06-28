@@ -6,13 +6,13 @@ class Node:
 
 class MusiLeng(Node):
     def __init__(self, tempo_dir, bar_dir, consts, voices):
+        if len(voices) > 16: raise TooManyVoices
         self.tempo, self.bar, self.consts, self.voices = tempo_dir, bar_dir, consts, voices
 
-    def symbol_table(self):
-        return { const.identifier : const.number for const in self.consts }
+    def voices_number(self):
+        return len(self.voices)
 
-    def build_midi(self):
-        pass
+class TooManyVoices(Exception): pass
 
 
 class Literal(Node):
@@ -32,14 +32,24 @@ class ConstRef(Node):
 
 class TempoDirective(Node):
     def __init__(self, note_value, notes_per_min):
+        if notes_per_min == 0: raise InvalidTempo
         self.reference_note, self.notes_per_min = Duration(note_value), notes_per_min
 
 class BarDirective(Node):
+    valid_note_values = [ 2**i for i in range(0,7) ]
+
     def __init__(self, pulses, note_value):
+        if pulses == 0: raise InvalidBarPulses
+        if not note_value in self.valid_note_values: raise InvalidBarBase
         self.pulses, self.note_value = pulses, note_value
 
     def fraction(self):
         return Fraction(self.pulses, self.note_value)
+
+class InvalidTempo(Exception): pass
+class InvalidBarPulses(Exception): pass
+class InvalidBarBase(Exception): pass
+
 
 class ConstDecl(Node):
     def __init__(self, identifier, number):
@@ -50,30 +60,34 @@ class Note(Node):
     def __init__(self, pitch, octave, duration):
         self.pitch, self.octave, self.duration = pitch, octave, duration
 
-    def __eq__(self, other):
-        return (isinstance(other, Note) and self.pitch == other.pitch and self.octave == other.octave and self.duration == other.duration)
-
 class Silence(Node):
     def __init__(self, duration):
         self.duration = duration
 
-    def __eq__(self, other):
-        return (isinstance(other, Silence) and self.duration == other.duration)
-
 
 class Duration(Node):
+    proportions = {
+        'redonda':      Fraction(1, 1),
+        'blanca':       Fraction(1, 2),
+        'negra':        Fraction(1, 4),
+        'corchea':      Fraction(1, 8),
+        'semicorchea':  Fraction(1, 16),
+        'fusa' :        Fraction(1, 32),
+        'semifusa':     Fraction(1, 64),
+    }
+
     def __init__(self, note_value, dotted=False):
         self.note_value, self.dotted = note_value, dotted
 
-    def __eq__(self, other):
-        return (isinstance(other, Duration) and self.note_value == other.note_value and self.dotted == other.dotted)
+    def fraction(self):
+        return self.proportions[self.note_value] * self.dot_increase()
+
+    def dot_increase(self):
+        return Fraction(3,2) if self.dotted else 1
 
 class Pitch(Node):
     def __init__(self, musical_note, modifier=None):
         self.musical_note, self.modifier = musical_note, modifier
-
-    def __eq__(self, other):
-        return (isinstance(other, Pitch) and self.musical_note == other.musical_note and self.modifier == other.modifier)
 
 
 class Container(Node):
@@ -81,9 +95,9 @@ class Container(Node):
         self.childs = childs
 
 class Voice(Container):
-    def __init__(self, instrument, bars):
-        super().__init__(bars)
-        self.instrument, self.bars = instrument, bars
+    def __init__(self, instrument, childs):
+        super().__init__(childs)
+        self.instrument = instrument
 
 class Repeat(Container):
     def __init__(self, times, childs):
@@ -94,3 +108,6 @@ class Bar(Container):
     def __init__(self, notes):
         super().__init__(notes)
         self.notes = notes
+
+    def duration(self):
+        return sum(note.duration.fraction() for note in self.notes)

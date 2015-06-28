@@ -29,7 +29,7 @@ class Visitor:
         self.visit_all(node.childs)
 
     def visit_type_Bar(self, node):
-        self.visit_all(node.childs)
+        self.visit_all(node.notes)
 
     def visit_type_Note(self, node):
         self.visit(node.pitch)
