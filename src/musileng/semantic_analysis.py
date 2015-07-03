@@ -2,9 +2,8 @@ from musileng.ast import *
 from musileng.visitor import *
 
 class SemanticVisitor(Visitor):
-    def visit_type_MusiLeng(self, node):
+    def __init__(self):
         self.symbol_table = {}
-        super().visit_type_MusiLeng(node)
 
     def visit_type_ConstDecl(self, node):
         self.symbol_table[node.identifier] = node.number

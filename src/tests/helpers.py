@@ -3,6 +3,7 @@ import musileng.parser
 import musileng.lexer
 from musileng.ast import *
 from musileng.semantic_analysis import *
+from musileng.encoder import *
 from ply import lex, yacc
 
 class TestMusilengBase(unittest.TestCase):

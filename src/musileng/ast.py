@@ -35,16 +35,26 @@ class TempoDirective(Node):
         if notes_per_min == 0: raise InvalidTempo
         self.reference_note, self.notes_per_min = Duration(note_value), notes_per_min
 
+    def microseconds_per_quarter_note(self):
+        return int((1000000 * 60 * self.reference_note.note_value_number()) /
+                   (4 * self.notes_per_min))
+
 class BarDirective(Node):
     valid_note_values = [ 2**i for i in range(0,7) ]
 
-    def __init__(self, pulses, note_value):
+    def __init__(self, pulses, note_value_number):
         if pulses == 0: raise InvalidBarPulses
-        if not note_value in self.valid_note_values: raise InvalidBarBase
-        self.pulses, self.note_value = pulses, note_value
+        if not note_value_number in self.valid_note_values: raise InvalidBarBase
+        self.pulses, self.note_value_number = pulses, note_value_number
+
+    def pulse_duration(self):
+        return Duration.from_number(self.note_value_number)
 
     def fraction(self):
-        return Fraction(self.pulses, self.note_value)
+        return Fraction(self.pulses, self.note_value_number)
+
+    def formated(self):
+        return "%d/%d" % (self.pulses, self.note_value_number)
 
 class InvalidTempo(Exception): pass
 class InvalidBarPulses(Exception): pass
@@ -66,18 +76,27 @@ class Silence(Node):
 
 
 class Duration(Node):
-    proportions = {
-        'redonda':      Fraction(1, 1),
-        'blanca':       Fraction(1, 2),
-        'negra':        Fraction(1, 4),
-        'corchea':      Fraction(1, 8),
-        'semicorchea':  Fraction(1, 16),
-        'fusa' :        Fraction(1, 32),
-        'semifusa':     Fraction(1, 64),
+    numbers = {
+        'redonda':      1,
+        'blanca':       2,
+        'negra':        4,
+        'corchea':      8,
+        'semicorchea':  16,
+        'fusa' :        32,
+        'semifusa':     64,
     }
+    proportions = { name : Fraction(1, num) for name, num in numbers.items() }
+
+    @classmethod
+    def from_number(cls, number):
+        for name, num in cls.numbers.items():
+            if num == number: return Duration(name)
 
     def __init__(self, note_value, dotted=False):
         self.note_value, self.dotted = note_value, dotted
+
+    def note_value_number(self):
+        return self.numbers[self.note_value]
 
     def fraction(self):
         return self.proportions[self.note_value] * self.dot_increase()
@@ -86,9 +105,13 @@ class Duration(Node):
         return Fraction(3,2) if self.dotted else 1
 
 class Pitch(Node):
+    american_codes = {'do' : 'c', 're' : 'd', 'mi' : 'e', 'fa' : 'f', 'sol' : 'g', 'la' : 'a', 'si' : 'b'}
+
     def __init__(self, musical_note, modifier=None):
         self.musical_note, self.modifier = musical_note, modifier
 
+    def american(self):
+        return self.american_codes[self.musical_note] + (self.modifier if self.modifier else '')
 
 class Container(Node):
     def __init__(self, childs):
