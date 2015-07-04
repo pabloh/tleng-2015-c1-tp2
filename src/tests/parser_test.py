@@ -7,6 +7,20 @@ class TestMusilengParser(TestMusilengBase):
     def setUp(self):
         super().setUp()
 
+        self.def_with_empty_voice = self.simple_header + """
+            voz(0) {
+                compas { nota(do, 1, blanca); }
+            }
+            voz(23) { }
+        """
+
+        self.def_with_empty_bar = self.simple_header + """
+            voz(0) {
+                compas { nota(do, 1, blanca); }
+            }
+            voz(23) { compas {} }
+        """
+
         self.invalid_tempo_def = """
             #tempo negra 0
             #compas 2/4
@@ -82,6 +96,18 @@ class TestMusilengParser(TestMusilengBase):
         self.assertEqual(23, mus.voices[0].instrument.value(symbols))
         self.assertEqual(1, mus.voices[0].childs[0].notes[0].octave.value(symbols))
         self.assertEqual(2, mus.voices[0].childs[0].notes[1].octave.value(symbols))
+
+    def test_no_voices(self):
+        with self.assertRaises(SyntaxError):
+            self.parse(self.simple_header)
+
+    def test_empty_voice(self):
+        with self.assertRaises(SyntaxError):
+            self.parse(self.def_with_empty_voice)
+
+    def test_empty_bar(self):
+        with self.assertRaises(SyntaxError):
+            self.parse(self.def_with_empty_bar)
 
 
 if __name__ == '__main__':
