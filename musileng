@@ -1,0 +1,3 @@
+#!/bin/bash
+
+PYTHONPATH="$(dirname $BASH_SOURCE)/src" /usr/bin/python3 "$(dirname $BASH_SOURCE)/src/musileng/cli.py" $*
