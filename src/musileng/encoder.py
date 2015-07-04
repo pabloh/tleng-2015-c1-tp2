@@ -95,4 +95,4 @@ class MidiTimer:
         self.bar += bars
 
     def formated(self):
-        return "%02d:%02d:%03d" % (self.bar, self.pulse, self.clicks)
+        return "%03d:%02d:%03d" % (self.bar, self.pulse, self.clicks)

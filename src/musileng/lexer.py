@@ -88,4 +88,4 @@ def t_error(token):
     message += "\nvalue:" + str(token.value)
     message += "\nline:" + str(token.lineno)
     message += "\nposition:" + str(token.lexpos)
-    raise Exception(message)
+    raise SyntaxError(message)

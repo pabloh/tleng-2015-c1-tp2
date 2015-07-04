@@ -24,6 +24,9 @@ class TestMusilengLexer(unittest.TestCase):
     def test_keywords(self):
         self.assertTokens('tempo const voz repetir nota silencio', [('TEMPO', 'tempo'), ('CONST', 'const'), ('VOZ', 'voz'), ('REPETIR', 'repetir'), ('NOTA', 'nota'), ('SILENCIO', 'silencio')])
 
+    def test_invalid_token(self):
+        with self.assertRaises(SyntaxError):
+            self.tokens('compas []')
 
     def test_directives(self):
         self.assertTokens('#tempo redonda 60', [('HASH', '#'), ('TEMPO', 'tempo'), ('NOTE_VALUE', 'redonda'), ('NUMBER', 60)])
