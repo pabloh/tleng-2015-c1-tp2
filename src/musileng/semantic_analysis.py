@@ -66,4 +66,4 @@ class InvalidInstrument(Exception):
 
 class InvalidBarDuration(Exception):
     def __init__(self, midi_bar, invalid_bar):
-        super().__init__("compás de {invalid}' declarado pero el configurado era de {bar}".format(bar=midi_bar, invalid=invalid_bar))
+        super().__init__("compás de '{invalid}' declarado pero el configurado era de {bar}".format(bar=midi_bar, invalid=invalid_bar))

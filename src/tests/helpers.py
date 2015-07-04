@@ -11,6 +11,7 @@ class TestMusilengBase(unittest.TestCase):
     parser = yacc.yacc(module=musileng.parser)
 
     def setUp(self):
+        self.lexer = type(self).lexer.clone()
         self.analizer = MusiLengSemanticAnalizer()
 
         self.simple_header = """
