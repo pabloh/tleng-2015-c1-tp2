@@ -4,6 +4,7 @@ from musileng.semantic_analysis import SemanticVisitor
 
 class SMFEncoder(SemanticVisitor):
     default_volume = 70
+    midi_percusion_instruments = range(35,82)
 
     def __init__(self, output):
         self.output = output
@@ -27,8 +28,10 @@ class SMFEncoder(SemanticVisitor):
         self.formated_bar = node.formated()
 
     def visit_type_Voice(self, node):
-        self.timer.reset()
+        if self.current_track == 10 and not self.value(node.instrument) in self.midi_percusion_instruments:
+            raise Track10MustBeAPercussionInstrument(self.value(node.instrument))
 
+        self.timer.reset()
         self.output_track_begin()
         self.output_timestamped_line('Meta TrkName "Voz {NUMERO_DE_VOZ}"', NUMERO_DE_VOZ=self.current_track)
         self.output_timestamped_line('ProgCh ch={CANAL} prog={INSTRUMENTO}', CANAL=self.current_track, INSTRUMENTO=self.value(node.instrument))
@@ -96,3 +99,7 @@ class MidiTimer:
 
     def formated(self):
         return "%03d:%02d:%03d" % (self.bar, self.pulse, self.clicks)
+
+class Track10MustBeAPercussionInstrument(Exception):
+    def __init__(self, instrument):
+        super().__init__("El instrumento número {} asignado al track 10 no es de percusión según la especificación MIDI".format(instrument))

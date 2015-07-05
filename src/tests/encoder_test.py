@@ -236,6 +236,17 @@ class TestMusilengEncoder(TestMusilengBase):
     def test_misc_clicks(self):
         self.assertEqual(self.def_w_full_note_bar_encoded, self.encode(self.def_w_full_note_bar))
 
+    @unittest.expectedFailure
+    def test_valid_track10_instrument(self):
+        self.fail("implementation pending")
+
+    @unittest.expectedFailure
+    def test_invalid_track10_instrument(self):
+        self.fail("implementation pending")
+
+    @unittest.expectedFailure
+    def test_nested_repetitions(self):
+        self.fail("implementation pending")
 
 if __name__ == '__main__':
     unittest.main()
