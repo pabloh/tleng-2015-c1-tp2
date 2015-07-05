@@ -1,3 +1,5 @@
+import re
+
 keywords = {
     'tempo'    : 'TEMPO',
     'compas'   : 'COMPAS',
@@ -83,9 +85,8 @@ def t_NEWLINE(token):
 
 
 def t_error(token):
-    message = "Token desconocido:"
-    message += "\ntype:" + token.type
-    message += "\nvalue:" + str(token.value)
-    message += "\nline:" + str(token.lineno)
-    message += "\nposition:" + str(token.lexpos)
+    message = "Token desconocido: "
+    message += re.sub(r'\s+.*', '', str(token.value))
+    message += " en linea: " + str(token.lineno)
+    message += " y caracter: " + str(token.lexpos)
     raise SyntaxError(message)
