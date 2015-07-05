@@ -113,23 +113,22 @@ class Pitch(Node):
     def american(self):
         return self.american_codes[self.musical_note] + (self.modifier if self.modifier else '')
 
-class Container(Node):
+class BarContainer(Node):
     def __init__(self, childs):
         self.childs = childs
 
-class Voice(Container):
+class Voice(BarContainer):
     def __init__(self, instrument, childs):
         super().__init__(childs)
         self.instrument = instrument
 
-class Repeat(Container):
+class Repeat(BarContainer):
     def __init__(self, times, childs):
         super().__init__(childs)
         self.times = times
 
-class Bar(Container):
+class Bar(Node):
     def __init__(self, notes):
-        super().__init__(notes)
         self.notes = notes
 
     def duration(self):

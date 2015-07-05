@@ -211,6 +211,59 @@ class TestMusilengEncoder(TestMusilengBase):
             TrkEnd
             """)
 
+        self.def_w_nested_repeat = """
+            #tempo negra 60
+            #compas 2/4
+
+            const piano = 23;
+
+            voz(piano) {
+                repetir(3) {
+                    compas {
+                        nota(re, 1, blanca);
+                    }
+
+                    repetir(2) {
+                        compas {
+                            nota(do, 2, blanca);
+                        }
+                    }
+                }
+            }
+        """
+
+        self.def_w_nested_repeat_encoded = self.no_ident("""
+            MFile 1 2 384
+            MTrk
+            000:00:000 TimeSig 2/4 24 8
+            000:00:000 Tempo 1000000
+            000:00:000 Meta TrkEnd
+            TrkEnd
+            MTrk
+            000:00:000 Meta TrkName "Voz 1"
+            000:00:000 ProgCh ch=1 prog=23
+            000:00:000 On  ch=1 note=d1  vol=70
+            001:00:000 Off ch=1 note=d1  vol=0
+            001:00:000 On  ch=1 note=c2  vol=70
+            002:00:000 Off ch=1 note=c2  vol=0
+            002:00:000 On  ch=1 note=c2  vol=70
+            003:00:000 Off ch=1 note=c2  vol=0
+            003:00:000 On  ch=1 note=d1  vol=70
+            004:00:000 Off ch=1 note=d1  vol=0
+            004:00:000 On  ch=1 note=c2  vol=70
+            005:00:000 Off ch=1 note=c2  vol=0
+            005:00:000 On  ch=1 note=c2  vol=70
+            006:00:000 Off ch=1 note=c2  vol=0
+            006:00:000 On  ch=1 note=d1  vol=70
+            007:00:000 Off ch=1 note=d1  vol=0
+            007:00:000 On  ch=1 note=c2  vol=70
+            008:00:000 Off ch=1 note=c2  vol=0
+            008:00:000 On  ch=1 note=c2  vol=70
+            009:00:000 Off ch=1 note=c2  vol=0
+            009:00:000 Meta TrkEnd
+            TrkEnd
+            """)
+
     def tearDown(self):
         self.output.close()
 
@@ -236,17 +289,8 @@ class TestMusilengEncoder(TestMusilengBase):
     def test_misc_clicks(self):
         self.assertEqual(self.def_w_full_note_bar_encoded, self.encode(self.def_w_full_note_bar))
 
-    @unittest.expectedFailure
-    def test_valid_track10_instrument(self):
-        self.fail("implementation pending")
-
-    @unittest.expectedFailure
-    def test_invalid_track10_instrument(self):
-        self.fail("implementation pending")
-
-    @unittest.expectedFailure
     def test_nested_repetitions(self):
-        self.fail("implementation pending")
+        self.assertEqual(self.def_w_nested_repeat_encoded, self.encode(self.def_w_nested_repeat))
 
 if __name__ == '__main__':
     unittest.main()

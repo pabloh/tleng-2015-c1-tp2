@@ -95,11 +95,10 @@ def p_pitch(subs):
 
 
 def p_error(token):
-    message = "[Syntax error]"
+    message = "[Error de Sintaxis]"
     if token is not None:
-        message += " token: " + str(token.value)
-        message += " inesperado en linea: " + str(token.lineno)
-        message += " y caracter: " + str(token.lexpos)
+        message += " token " + str(token.value)
+        message += " inesperado en linea " + str(token.lineno)
     else:
         message += " fin de archivo inesperado"
     raise SyntaxError(message)
