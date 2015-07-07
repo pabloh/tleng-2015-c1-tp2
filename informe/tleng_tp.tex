@@ -78,7 +78,7 @@ Token & Descripción\\
 \texttt{NUMBER}                                   & Constante numérica (expresión regular \texttt{[0-9]+(\textbackslash.[0-9]+)?})\\
 \texttt{PLUS}, \texttt{MINUS}                     & Operadores aritméticos binarios (caracteres ``+'', ``-'')\\
 \texttt{LPAREN}, \texttt{RPAREN}                  & Agrupación (caracteres ``('' y ``)'')\\
-\texttt{LBRACKET}, \texttt{RBRACKET}              & Agrupación (caracteres ``('' y ``)'')\\
+\texttt{LBRACKET}, \texttt{RBRACKET}              & Delimitación de bloques ``\{'' y ``\}'')\\
 \texttt{COMMENT}                                  & Comentario (expresión regular \texttt{"([\^{}\textbackslash\textbackslash\textbackslash{}n]|(\textbackslash\textbackslash.))*"})\\
 \hline
 \begin{tabular}[c]{@{}l@{}} \texttt{TEMPO}, \texttt{COMPAS}, \texttt{CONST} \\
@@ -87,6 +87,53 @@ Token & Descripción\\
 \end{tabular}
 
 \subsection{Producciones}
+Las producciones que definen la gramática se detallan a continuación, en el formato en el que son requeridas por la librería PLY. \\La producción inicial de esta gramática es \texttt{musileng}.
+
+\begin{verbatim}
+  musileng         : tempo_directive compas_directive constants voices
+
+  tempo_directive  : HASH TEMPO NOTE_VALUE NUMBER
+  
+  compas_directive : HASH COMPAS NUMBER SLASH NUMBER
+  
+  constants        : constant constants
+                   | 
+                   
+  constant         : CONST ID EQUALS NUMBER SEMICOLON
+  
+  voices           : voice voices
+                   | voice
+                   
+  voice            : VOZ LPAREN numeric_value RPAREN LBRACKET voice_content RBRACKET
+  
+  voice_content    : compas voice_content
+                   | repetition voice_content
+                   | compas
+                   | repetition
+                   
+  compas           : COMPAS LBRACKET compas_content RBRACKET
+  
+  compas_content   : note compas_content
+                   | silence compas_content
+                   | note
+                   | silence
+                   
+  note             : NOTA LPAREN pitch COMMA numeric_value COMMA duration RPAREN SEMICOLON
+  
+  silence          : SILENCIO LPAREN duration RPAREN SEMICOLON
+  
+  repetition       : REPETIR LPAREN numeric_value RPAREN LBRACKET voice_content RBRACKET
+  
+  numeric_value    : NUMBER
+                   | ID
+                   
+  duration         : NOTE_VALUE
+                   | NOTE_VALUE POINT
+                   
+  pitch            : MUSICAL_NOTE
+                   | MUSICAL_NOTE PLUS
+                   | MUSICAL_NOTE MINUS
+\end{verbatim}
 
 \section{Implementación.}
 \subsection{Parsing}
