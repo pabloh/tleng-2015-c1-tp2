@@ -1,15 +1,14 @@
 from fractions import Fraction
 
-def assign_lineno(old_init):
-    def new_init(self, *args, line=None, **kargs):
-        self.lineno = line
-        old_init(self, *args, **kargs)
-
-    return new_init
-
 class Node:
+    def __init__(self, *args, line=None, **kargs):
+        self.lineno = line
+        self.init_subnodes(*args, **kargs)
+
     def accept(self, visitor):
         getattr(visitor, 'visit_type_' + type(self).__name__)(self)
+
+    def init_subnodes(self, *args, **kargs): pass
 
 class MusiLengError(Exception):
     def __init__(self, node, detail):
@@ -20,8 +19,7 @@ class MusiLengError(Exception):
 
 
 class MusiLeng(Node):
-    @assign_lineno
-    def __init__(self, tempo_dir, bar_dir, consts, voices):
+    def init_subnodes(self, tempo_dir, bar_dir, consts, voices):
         if len(voices) > 16: raise TooManyVoices(voices[16])
         self.tempo, self.bar, self.consts, self.voices = tempo_dir, bar_dir, consts, voices
 
@@ -34,16 +32,14 @@ class TooManyVoices(MusiLengError):
 
 
 class Literal(Node):
-    @assign_lineno
-    def __init__(self, number):
+    def init_subnodes(self, number):
         self.number = number
 
     def value(self, symbol_table = {}):
         return self.number
 
 class ConstRef(Node):
-    @assign_lineno
-    def __init__(self, identifier):
+    def init_subnodes(self, identifier):
         self.identifier = identifier
 
     def value(self, symbol_table):
@@ -51,8 +47,7 @@ class ConstRef(Node):
 
 
 class TempoDirective(Node):
-    @assign_lineno
-    def __init__(self, note_value, notes_per_min):
+    def init_subnodes(self, note_value, notes_per_min):
         if notes_per_min == 0: raise InvalidTempo(self)
         self.reference_note, self.notes_per_min = Duration(note_value), notes_per_min
 
@@ -63,8 +58,7 @@ class TempoDirective(Node):
 class BarDirective(Node):
     valid_note_values = [ 2**i for i in range(0,7) ]
 
-    @assign_lineno
-    def __init__(self, pulses, note_value_number):
+    def init_subnodes(self, pulses, note_value_number):
         if pulses == 0: raise InvalidBarPulses(self)
         if not note_value_number in self.valid_note_values: raise InvalidBarBase(self)
         self.pulses, self.note_value_number = pulses, note_value_number
@@ -80,7 +74,7 @@ class BarDirective(Node):
 
 class InvalidTempo(MusiLengError):
     def __init__(self, node):
-        super().__init__(node, 'la cantidad de notas de tempo por minuto no puede ser 0')
+        super().__init__(node, 'la cantidad de notas por minuto en tempo no puede ser 0')
 
 class InvalidBarPulses(MusiLengError):
     def __init__(self, node):
@@ -88,23 +82,20 @@ class InvalidBarPulses(MusiLengError):
 
 class InvalidBarBase(MusiLengError):
     def __init__(self, node):
-        super().__init__(node, 'número de figura inválido')
+        super().__init__(node, 'número de figura inválido para el compás')
 
 
 class ConstDecl(Node):
-    @assign_lineno
-    def __init__(self, identifier, number):
+    def init_subnodes(self, identifier, number):
         self.identifier, self.number = identifier, number
 
 
 class Note(Node):
-    @assign_lineno
-    def __init__(self, pitch, octave, duration):
+    def init_subnodes(self, pitch, octave, duration):
         self.pitch, self.octave, self.duration = pitch, octave, duration
 
 class Silence(Node):
-    @assign_lineno
-    def __init__(self, duration):
+    def init_subnodes(self, duration):
         self.duration = duration
 
 
@@ -125,8 +116,7 @@ class Duration(Node):
         for name, num in cls.numbers.items():
             if num == number: return Duration(name)
 
-    @assign_lineno
-    def __init__(self, note_value, dotted=False):
+    def init_subnodes(self, note_value, dotted=False):
         self.note_value, self.dotted = note_value, dotted
 
     def note_value_number(self):
@@ -141,26 +131,22 @@ class Duration(Node):
 class Pitch(Node):
     american_codes = {'do' : 'c', 're' : 'd', 'mi' : 'e', 'fa' : 'f', 'sol' : 'g', 'la' : 'a', 'si' : 'b'}
 
-    @assign_lineno
-    def __init__(self, musical_note, modifier=None):
+    def init_subnodes(self, musical_note, modifier=None):
         self.musical_note, self.modifier = musical_note, modifier
 
     def american(self):
         return self.american_codes[self.musical_note] + (self.modifier if self.modifier else '')
 
 class Voice(Node):
-    @assign_lineno
-    def __init__(self, instrument, childs):
+    def init_subnodes(self, instrument, childs):
         self.instrument, self.childs = instrument, childs
 
 class Repeat(Node):
-    @assign_lineno
-    def __init__(self, times, childs):
+    def init_subnodes(self, times, childs):
         self.times, self.childs = times, childs
 
 class Bar(Node):
-    @assign_lineno
-    def __init__(self, notes):
+    def init_subnodes(self, notes):
         self.notes = notes
 
     def duration(self):
