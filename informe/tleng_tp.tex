@@ -48,7 +48,7 @@
 \newpage
 
 \section{Introducción}
-Intro
+En este trabajo desarrollamos un parser para el lenguaje musileng, creado por el cuerpo docente de la materia Teoría de Lenguajes de nuestra facultad. Este lenguaje esta orientado a la composición de piezas musicales, que luego será transformado al formato MIDI para su reproducción.
 
 \section{Especificación de la gramática}
 A continuación detallamos primero los tokens reconocidos por el lexer y luego las producciones reconocidas por el parser.
@@ -106,6 +106,9 @@ Las producciones que definen la gramática se detallan a continuación, en el fo
                    
   voice            : VOZ LPAREN numeric_value RPAREN LBRACKET voice_content RBRACKET
   
+  
+  
+  
   voice_content    : compas voice_content
                    | repetition voice_content
                    | compas
@@ -142,19 +145,30 @@ Las producciones que definen la gramática se detallan a continuación, en el fo
 	\begin{itemize}
   		\item Python 3.3 o superior
   		\item Librería PLY 3.6 (\url{http://www.dabeaz.com/ply/})
-  		\item Librería Midi-Completar (\url{https://www.midi/})
+  		\item Midicomp (\url{https://github.com/markc/midicomp/})
 	\end{itemize}
 
 \section{Modo de uso}
-modo de uso
+Para hacer uso del programa simplemente hay que ejecutar el archivo musileng en directorio raiz pasándole en el primer parámetro el archivo de entrada y el nombre del archivo que se desea generar en el segundo. \\
+Ejemplo: \texttt{./musileng ejemplos/ej1\_input.txt ejemplos/ej1\_output.txt }
+\subsection{Tests}
+Para correr la test suite hay que ejecutar dentro del directorio ./src, donde se encuentra el código fuente, el comando  \texttt{python -m unittest discover tests '*\_test.py'}
 
 
 \section{Ejemplos}
 ej
 \subsection{Entrada inválida 1}
 \subsection{Entrada inválida 2}
-
-
+\newpage
+\section{Decisiones de Diseño}
+A continuación se enumeran las distintas decisiones de diseño que se tomaron en el transcurso del desarrollo del parser.
+\begin{itemize}
+\item Sobre el control de errores en el archivo de entrada se reporta la falla del primer error encontrado
+\item Interpretamos que redefinir una constante es una falla del archivo de entrada, por lo tanto realizar este tipo de acción genera un mensaje de error.
+\item La estructura \texttt{repetir(veces){}} puede aceptar tanto un número literal, como una constante
+\item Los errores semánticos incluyen número de línea para facilitar la corrección por parte del programador/compositor de musileng
+\item El número de track 10 debe ser asignado a percusión según la norma MIDI
+\end{itemize}
 
 \section{Conclusiones}
 conclusiones
