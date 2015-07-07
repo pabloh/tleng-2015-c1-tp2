@@ -1,0 +1,13 @@
+#tempo redonda 60
+#compas 2/2
+const octava = 5;
+const grand_piano = 8;  // Definimos la constante grand_piano
+const grand_piano = 7;  // Error: Las constantes no pueden re-definirse
+voz (grand_piano)       
+{
+  compas
+  {
+    nota(si, octava, blanca);
+    silencio(blanca);
+  }
+}

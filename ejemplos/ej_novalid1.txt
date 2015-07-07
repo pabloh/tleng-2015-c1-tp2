@@ -1,0 +1,11 @@
+#tempo redonda 60
+#compas 2/2
+const octava = 5;
+voz (grand_piano) // Error de validacion: constante no definida (grand_piano)
+{
+  compas
+  {
+    nota(si, octava, blanca);
+    silencio(blanca);
+  }
+}

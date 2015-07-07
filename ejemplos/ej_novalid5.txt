@@ -1,0 +1,24 @@
+#tempo redonda 60
+#compas 2/2
+
+const octava = 5;
+const grand_piano = 8;
+const a = 0;
+
+voz (grand_piano) 
+{
+  repetir(a) // Error: No es válido repetir 0 veces
+  {
+    compas
+    {
+      nota(fa, octava, redonda);
+    }
+    compas
+    {
+      nota(sol-, 9, negra);
+      nota(sol, octava, negra);
+      nota(sol+, octava, negra);
+      nota(la, octava, negra);
+    }
+  }
+}

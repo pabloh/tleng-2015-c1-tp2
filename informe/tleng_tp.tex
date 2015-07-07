@@ -157,9 +157,50 @@ Para correr la test suite hay que ejecutar dentro del directorio ./src, donde se
 
 
 \section{Ejemplos}
-ej
+Presentamos a continuación algunos ejemplos que permiten ver la salida del programa
+\subsection{Entrada válida 1}
+\subsection{Entrada válida 2}
+\subsection{Entrada válida 3}
 \subsection{Entrada inválida 1}
+Todas las constantes deben declararse antes de ser utilizadas.
+\begin{small}
+  \verbatiminput{../ejemplos/ej_novalid1.txt}
+\end{small}
+
+\textbf{Salida:} \texttt{Ocurrió un error en la línea 6: 'grand\_piano' no fue declarada}
+
+
 \subsection{Entrada inválida 2}
+Las constantes no pueden redefinirse en el programa.
+\begin{small}
+  \verbatiminput{../ejemplos/ej_novalid2.txt}
+\end{small}
+
+\textbf{Salida:} \texttt{Ocurrió un error en la línea 5: 'grand\_piano' ya fue declarada}
+
+\subsection{Entrada inválida 3}
+Detección de errores de validación en los tiempos de un compás
+\begin{small}
+  \verbatiminput{../ejemplos/ej_novalid3.txt}
+\end{small}
+
+\textbf{Salida:}\\ \texttt{Ocurrió un error en la línea 12: compás de 3/2 declarado pero el configurado era de 1}
+\subsection{Entrada inválida 4}
+Detección de octavas no válidas
+\begin{small}
+  \verbatiminput{../ejemplos/ej_novalid4.txt}
+\end{small}
+
+\textbf{Salida:} \texttt{Ocurrió un error en la línea 15: '11' no es una octava válida}
+
+\subsection{Entrada inválida 5}
+La estructura \texttt{repeat(veces)} acepta números o constantes para facilitar el trabajo del programador de musileng. Pero es un error querer iterar 0 veces con un repeat.
+\begin{small}
+  \verbatiminput{../ejemplos/ej_novalid5.txt}
+\end{small}
+
+\textbf{Salida:} \texttt{Ocurrió un error en la línea 10: no es válida una repetición de 0 iteraciones}
+
 \newpage
 \section{Decisiones de Diseño}
 A continuación se enumeran las distintas decisiones de diseño que se tomaron en el transcurso del desarrollo del parser.
