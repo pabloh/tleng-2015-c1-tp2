@@ -8,6 +8,8 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{subfig}
+\usepackage{enumerate}
+\usepackage{hyperref}
 
 %uso: \ponerGrafico{file}{caption}{scale}{label}
 \newcommand{\ponerGrafico}[4]
@@ -22,8 +24,8 @@
 
 \materia{Teor\'ia de Lenguajes}
 
-\titulo{TP1}
-\fecha{29/4/2015}
+\titulo{TP2}
+\fecha{8/7/2015}
 \grupo{PLD}
 \integrante{Pablo Herrero}{332/07}{pablodherrero@gmail.com}
 \integrante{Diego Sueiro}{75/90}{dsueiro@gmail.com}
@@ -43,100 +45,40 @@
 
 \newpage
 
-\begin{section}{Introducción}
-El Trabajo Práctico consiste en implementar un programa que permita la construcción y ejecución de Autómatas Finitos Determinísticos (AFD's).
+\section{Introducción}
+Intro
 
-\end{section}
 
-\begin{section}{Implementación.}
+\section{Especificación de la gramática}
+espec
+\subsection{Tokens}
+Tabla tokens
+\subsection{Producciones}
 
-La implementación se realizó en Python v3 utilizando el esqueleto provisto por la cátedra. Se proveen los test de unidad y los archivos de entrada de datos utilizados para verificar el correcto funcionamiento del programa.
+\section{Implementación.}
+\subsection{Parsing}
 
-\end{section}
-\begin{subsection}{Representación Autómata}
-Se utiliza la clase \textbf{Automata} para representar la estructura y los algoritmos necesarios para procesar los autómatas.
-Mediante conjuntos almacenamos los estados totales, los estados finales y el lenguaje a utilizar.
-La tabla de transiciones se representa mediante un diccionario.
+\section{Requerimientos}
+	\begin{itemize}
+  		\item Python 3.3 o superior
+  		\item Librería PLY 3.6 (\url{http://www.dabeaz.com/ply/})
+  		\item Librería Midi-Completar (\url{https://www.midi/})
+	\end{itemize}
 
-\end{subsection}
+\section{Modo de uso}
+modo de uso
 
-\begin{subsection}{Lectura Expresion Regular}
-Mediante la función \textbf{ReadFromFile} se procesa el archivo de entrada que contiene la expresión regular parseada. Se chequea que solo contenga las operaciones y los caracteres aceptados por el enunciado, así como también, el indentado de las mismas. La función \textbf{ReadFromFile} devuelve una lista que contiene las operaciones de la ER a realizar, así como también el numero de operandos a utilizar por cada operación
-\end{subsection}
 
-\begin{subsection}{Conversion AFND a AFD}
-El primer punto del TP plantea leer una ER y generar un AFD mínimo.
-Una vez procesado el archivo de entrada que contiene la expresión regular, se genera un AFND-$\lambda$ mediante la clase \textbf{AFNDfromER}. Esta clase utiliza como soporte la clase \textbf{BuilderAF} que recibe simplemente agrega los estados y las transiciones $\lambda$ necesarias para construir el autómata que representa la ER que le pasamos.
-En base a este AFND resultante, se construye un AFD  mediante la clase \textbf{AFDfromAFN}
+\section{Ejemplos}
+ej
+\subsection{Entrada inválida 1}
+\subsection{Entrada inválida 2}
 
-\ponerGrafico{AFND_1.png}{Conversion AFND a AFD: Autómata de Entrada AFND}{0.4}{}
-\ponerGrafico{AFND_2.png}{Conversion AFND a AFD: Autómata resultante AFD}{0.6}{}
-\end{subsection}
 
-\begin{subsection}{Lectura de AFD desde archivo de entrada}
-Se procesa el archivo de entrada y se genera un AFD mediante la clase \textbf{AFDfromFile}. No se implementó chequeo de errores. Asuminos que el archivo de entrada cumple con la estructura planteada en el enunciado.
-\end{subsection}
 
-\begin{subsection}{Generación de archivo .dot}
-Se generan correctamente los archivos .dot para ser visualizados mediante GraphViz. Adicionalmente se genera el archivo gráfico en formato png.
-\end{subsection}
+\section{Conclusiones}
+conclusiones
 
-\begin{subsection}{Minimización}
-Se implementó el algoritmo de minimización por particionado en clases equivalentes. Se comienza desde un particionado inicial de 2 grupos, estados finales y estados no finales.
-Luego se recorre cada estado y se chequea a que grupo iría mediante cada una de los símbolos del lenguaje.
-De esta manera vamos agrupando en clases equivalentes a los estados. 
-El algoritmo termina cuando no se puede volver a particionar. 
-Luego eliminamos los estados inalcanzables del resultado para poder rearmar el autómata M mínimo
-
-%PseudoCodigo del algoritmo de minimizacion
-\begin{algorithm}[H]
-\begin{algorithmic}[1]
-\REQUIRE M automata finito deterministico
-\ENSURE M minimo
-\STATE grupoA $:=$ \{Estados Finales\}
-\STATE grupoB $:=$ \{Estados no Finales\}
-\REPEAT 
-	\FORALL {grupo}
-		\FORALL {estado}
-			\STATE Encontrar a que grupo nos llevan las entradas
-			\IF {Hay diferencias}
-				\STATE Particionar el grupo en conjuntos cuyos estados\\ 
-						vayan a los mismos grupos bajo esa entrada
-			\ENDIF
-		\ENDFOR
-	\ENDFOR
-\UNTIL {(no haya nuevo particionado)}
-\STATE RemoverEstadosInalcanzables(M)
-\STATE M $\leftarrow$ grupos como estados
-\caption{Minimizar(automata M)}
-\end{algorithmic}
-\end{algorithm}
-
-\ponerGrafico{min_input.png}{Ejemplo de Minimización: Autómata de Entrada - sin minimizar}{0.6}{}
-\ponerGrafico{min_final.png}{Ejemplo de Minimización: Autómata minimizado}{0.6}{}
-
-\end{subsection}
-\newpage
-\begin{subsection}{Intersección de Autómatas}
-Se implementó la operación \textbf{Cross Product} entre autómatas para la realización de este item. 
-
-\ponerGrafico{intersectar.png}{Ejemplo de Intersección: Autómatas a intersectar}{0.6}{}
-\ponerGrafico{intersectar-res.png}{Ejemplo de Intersección: Resultado}{0.6}{}
-
-\end{subsection}
-
-\begin{subsection}{Complemento}
-Primero completamos el autómata mediante el método \textbf{complete\_all} de la clase \textbf{autómata}.
-Luego se llamá al método \textbf{complemento} de la misma clase para realizar el complemento de su lenguaje del autómata. 
-\end{subsection}
-
-\begin{subsection}{Equivalencia de Autómatas}
-En este punto se aprovecharon las funciones implementadas previamente, ya que calculamos que si la intersección del complemento es \textbf{NULL} en ambas direcciones, entonces los lenguajes generados por los autómatas son equivalentes
-\end{subsection}
-
-\begin{section}{Conclusiones}
-La realización del trabajo práctico nos permitió famiarizarnos con los algoritmos vistos en la teórica para el manejo de expresiones regulares y autómatas.
-\end{section}
 \newpage
 
 \end{document}
