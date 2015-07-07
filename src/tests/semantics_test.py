@@ -91,25 +91,25 @@ class TestMusilengSemantics(TestMusilengBase):
     def test_missing_consts(self):
         mus = self.parse(self.missing_consts_def)
 
-        with self.assertRaises(UndeclaredSymbol, msg="'octava1' no fue declarado"):
+        with self.assertRaises(UndeclaredSymbol):
             self.analizer.visit(mus)
 
     def test_redeclared_consts(self):
         mus = self.parse(self.redeclared_consts_def)
 
-        with self.assertRaises(RedeclaredSymbol, msg="'octava2' ya fue declarado previamente"):
+        with self.assertRaises(RedeclaredSymbol):
             self.analizer.visit(mus)
 
     def test_invalid_octave(self):
         mus = self.parse(self.invalid_octave_def)
 
-        with self.assertRaises(InvalidOctave, msg="10 no es una octava válida"):
+        with self.assertRaises(InvalidOctave):
             self.analizer.visit(mus)
 
     def test_invalid_instrument(self):
         mus = self.parse(self.invalid_instrument_def)
 
-        with self.assertRaises(InvalidInstrument, msg="128 no es un instrumento válido"):
+        with self.assertRaises(InvalidInstrument):
             self.analizer.visit(mus)
 
     def test_invalid_repeat(self):

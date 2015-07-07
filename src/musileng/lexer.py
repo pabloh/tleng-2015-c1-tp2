@@ -87,5 +87,5 @@ def t_NEWLINE(token):
 def t_error(token):
     message = "[Error de Sintaxis] Token desconocido "
     message += re.sub(r'\s+.*', '', str(token.value))
-    message += " en linea " + str(token.lineno)
+    message += " en línea " + str(token.lineno)
     raise SyntaxError(message)

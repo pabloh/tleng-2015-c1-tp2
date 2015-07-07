@@ -57,7 +57,9 @@ class TestMusilengParser(TestMusilengBase):
 
         self.assertIsInstance(mus, MusiLeng)
         self.assertIsInstance(mus.bar, BarDirective)
+        self.assertEqual(3, mus.bar.lineno)
         self.assertIsInstance(mus.tempo, TempoDirective)
+        self.assertEqual(2, mus.tempo.lineno)
         self.assertEqual(Fraction(2,4), mus.bar.fraction())
         self.assertEqual(60, mus.tempo.notes_per_min)
         self.assertIsInstance(tempo_dur, Duration)
@@ -81,9 +83,14 @@ class TestMusilengParser(TestMusilengBase):
 
         self.assertEqual(1, len(mus.voices))
         self.assertIsInstance(mus.voices[0], Voice)
+        self.assertEqual(5, mus.voices[0].lineno)
+        self.assertEqual(5, mus.voices[0].instrument.lineno)
         self.assertEqual(3, mus.voices[0].instrument.value())
         self.assertEqual(1, len(mus.voices[0].childs))
+        self.assertEqual(6, mus.voices[0].childs[0].lineno)
         self.assertIsInstance(mus.voices[0].childs[0], Bar)
+        self.assertIsInstance(mus.voices[0].childs[0].notes[0], Note)
+        self.assertEqual(7, mus.voices[0].childs[0].notes[0].lineno)
 
     def test_too_many_voices(self):
         with self.assertRaises(TooManyVoices):
