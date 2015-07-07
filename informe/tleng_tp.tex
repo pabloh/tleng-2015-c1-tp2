@@ -7,6 +7,7 @@
 \usepackage{listings}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{verbatim}
 \usepackage{subfig}
 \usepackage{enumerate}
 \usepackage{hyperref}
@@ -173,6 +174,43 @@ A continuación se enumeran las distintas decisiones de diseño que se tomaron e
 \section{Conclusiones}
 conclusiones
 
+\newpage
+\section{Código Fuente}
+
+\subsection{parser.py}
+\begin{small}
+  \verbatiminput{../src/musileng/parser.py}
+\end{small}
+\newpage
+\subsection{lexer.py}
+\begin{small}
+  \verbatiminput{../src/musileng/lexer.py}
+\end{small}
+\newpage
+\subsection{ast.py}
+\begin{small}
+  \verbatiminput{../src/musileng/ast.py}
+\end{small}
+\newpage
+\subsection{encoder.py}
+\begin{small}
+  \verbatiminput{../src/musileng/encoder.py}
+\end{small}
+\newpage
+\subsection{visitor.py}
+\begin{small}
+  \verbatiminput{../src/musileng/visitor.py}
+\end{small}
+\newpage
+\subsection{semantic\_analysis.py}
+\begin{small}
+  \verbatiminput{../src/musileng/semantic_analysis.py}
+\end{small}
+\newpage
+\subsection{cli.py}
+\begin{small}
+  \verbatiminput{../src/musileng/cli.py}
+\end{small}
 \newpage
 
 \end{document}
