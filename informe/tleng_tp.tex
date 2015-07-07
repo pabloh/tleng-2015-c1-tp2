@@ -10,6 +10,8 @@
 \usepackage{subfig}
 \usepackage{enumerate}
 \usepackage{hyperref}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{booktabs}
 
 %uso: \ponerGrafico{file}{caption}{scale}{label}
 \newcommand{\ponerGrafico}[4]
@@ -48,11 +50,42 @@
 \section{Introducción}
 Intro
 
-
 \section{Especificación de la gramática}
-espec
+A continuación detallamos primero los tokens reconocidos por el lexer y luego las producciones reconocidas por el parser.
 \subsection{Tokens}
-Tabla tokens
+En la siguiente tabla podemos observar los tokens reconocidos por el Lexer. Las cadenas representadas por cada token se corresponden con su nombre en minúscula salvo especificado lo contrario.
+
+\vspace{1em}
+\begin{tabular}{ll}
+\hline
+\rowcolor[HTML]{BBDAFF}
+Token & Descripción\\
+\hline
+\texttt{HASH}				                      & Declaración de regla (carácter ``\#'')\\
+\texttt{EQUALS}                               	  & Declaración de regla (carácter ``='')\\
+\texttt{SLASH}  								  & Declaración de regla (carácter ``/'')\\
+\texttt{ID}                                       & Constante alfanumérica (expresión regular \texttt{[\_a-zA-Z][\_a-zA-Z0-9]*})\\
+\texttt{MUSICAL\_NOTE}                            & Constante alfanumérica que representa las notas musicales: \texttt{do re mi fa sol la si}\\
+\hline
+\texttt{NOTE\_VALUE}							  &\begin{tabular}[c]{@{}l@{}}Constantes que representan los valores de las notas musicales:\\
+													 \texttt{``redonda'', ``blanca'', ``negra'', ``corchea'', ``semicorchea'',}\\
+													 \texttt{``fusa'', ``semifusa''}
+												   \end{tabular}\\
+\hline
+\texttt{SEMICOLON}          					  & Declaración de regla (carácter ``;'')\\
+\texttt{COMMA}                                    & Declaración de regla (carácter ``,'')\\
+\texttt{POINT}                                    & Declaración de regla (carácter ``.'')\\
+\texttt{NUMBER}                                   & Constante numérica (expresión regular \texttt{[0-9]+(\textbackslash.[0-9]+)?})\\
+\texttt{PLUS}, \texttt{MINUS}                     & Operadores aritméticos binarios (caracteres ``+'', ``-'')\\
+\texttt{LPAREN}, \texttt{RPAREN}                  & Agrupación (caracteres ``('' y ``)'')\\
+\texttt{LBRACKET}, \texttt{RBRACKET}              & Agrupación (caracteres ``('' y ``)'')\\
+\texttt{COMMENT}                                  & Comentario (expresión regular \texttt{"([\^{}\textbackslash\textbackslash\textbackslash{}n]|(\textbackslash\textbackslash.))*"})\\
+\hline
+\begin{tabular}[c]{@{}l@{}} \texttt{TEMPO}, \texttt{COMPAS}, \texttt{CONST} \\
+\texttt{VOZ}, \texttt{REPETIR}, \texttt{NOTA} \\ \end{tabular}\\  \texttt{SILENCIO}      & Keywords necesarias para el lenguaje\\
+\hline
+\end{tabular}
+
 \subsection{Producciones}
 
 \section{Implementación.}
