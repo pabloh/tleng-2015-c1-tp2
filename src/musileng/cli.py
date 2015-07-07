@@ -29,4 +29,4 @@ if __name__ == "__main__":
     except FileNotFoundError as ioe:
         exit('No se pudo acceder al archivo: ' + ioe.filename)
     except MusiLengError as me:
-        exit(me.msg)
+        exit(str(me))
