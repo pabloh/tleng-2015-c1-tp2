@@ -32,7 +32,6 @@
 \fecha{8/7/2015}
 \grupo{PLD}
 \integrante{Pablo Herrero}{332/07}{pablodherrero@gmail.com}
-\integrante{Diego Sueiro}{75/90}{dsueiro@gmail.com}
 \integrante{Leandro Tozzi}{-}{leandro.tozzi@gmail.com}
 
 
@@ -50,7 +49,8 @@
 \newpage
 
 \section{Introducción}
-En este trabajo desarrollamos un parser para el lenguaje musileng, creado por el cuerpo docente de la materia Teoría de Lenguajes de nuestra facultad. Este lenguaje esta orientado a la composición de piezas musicales, que luego será transformado al formato MIDI para su reproducción.
+En este trabajo desarrollamos un parser para el lenguaje musileng, creado por el cuerpo docente de la materia Teoría de Lenguajes de nuestra facultad. Este lenguaje está orientado a la composición de piezas musicales, generando un archivo en un lenguaje intermedio, que luego será transformado al formato MIDI para su reproducción.
+
 
 \section{Especificación de la gramática}
 A continuación detallamos primero los tokens reconocidos por el lexer y luego las producciones reconocidas por el parser.
@@ -63,9 +63,9 @@ En la siguiente tabla podemos observar los tokens reconocidos por el Lexer. Las 
 \rowcolor[HTML]{BBDAFF}
 Token & Descripción\\
 \hline
-\texttt{HASH}				                      & Declaración de regla (carácter ``\#'')\\
-\texttt{EQUALS}                               	  & Declaración de regla (carácter ``='')\\
-\texttt{SLASH}  								  & Declaración de regla (carácter ``/'')\\
+\texttt{HASH}				                      & Carácter ``\#''\\
+\texttt{EQUALS}                               	  & Carácter ``=''\\
+\texttt{SLASH}  								  & Carácter ``/''\\
 \texttt{ID}                                       & Constante alfanumérica (expresión regular \texttt{[\_a-zA-Z][\_a-zA-Z0-9]*})\\
 \texttt{MUSICAL\_NOTE}                            & Constante alfanumérica que representa las notas musicales: \texttt{do re mi fa sol la si}\\
 \hline
@@ -74,17 +74,23 @@ Token & Descripción\\
 													 \texttt{``fusa'', ``semifusa''}
 												   \end{tabular}\\
 \hline
-\texttt{SEMICOLON}          					  & Declaración de regla (carácter ``;'')\\
-\texttt{COMMA}                                    & Declaración de regla (carácter ``,'')\\
-\texttt{POINT}                                    & Declaración de regla (carácter ``.'')\\
+\texttt{SEMICOLON}          					  & Carácter ``;''\\
+\texttt{COMMA}                                    & Carácter ``,''\\
+\texttt{POINT}                                    & Carácter ``.''\\
 \texttt{NUMBER}                                   & Constante numérica (expresión regular \texttt{[0-9]+(\textbackslash.[0-9]+)?})\\
-\texttt{PLUS}, \texttt{MINUS}                     & Operadores aritméticos binarios (caracteres ``+'', ``-'')\\
+\texttt{PLUS}, \texttt{MINUS}                     & Operadores que modifican una nota musical (caracteres ``+'', ``-'')\\
 \texttt{LPAREN}, \texttt{RPAREN}                  & Agrupación (caracteres ``('' y ``)'')\\
 \texttt{LBRACKET}, \texttt{RBRACKET}              & Delimitación de bloques ``\{'' y ``\}'')\\
 \texttt{COMMENT}                                  & Comentario (expresión regular \texttt{"([\^{}\textbackslash\textbackslash\textbackslash{}n]|(\textbackslash\textbackslash.))*"})\\
 \hline
-\begin{tabular}[c]{@{}l@{}} \texttt{TEMPO}, \texttt{COMPAS}, \texttt{CONST} \\
-\texttt{VOZ}, \texttt{REPETIR}, \texttt{NOTA} \\ \end{tabular}\\  \texttt{SILENCIO}      & Keywords necesarias para el lenguaje\\
+\texttt{CONST} 									  & Cadena ``const''\\
+\texttt{COMPAS} 								  & Cadena ``compas''\\
+\texttt{TEMPO} 									  & Cadena ``tempo''\\
+\texttt{VOZ}    								  & Cadena ``voz''\\
+\texttt{REPETIR}      							  & Cadena ``repetir''\\
+\texttt{NOTA}   								  & Cadena ``nota''\\
+\texttt{SILENCIO}      							  & Cadena ``silencio''\\
+
 \hline
 \end{tabular}
 
@@ -141,7 +147,14 @@ Las producciones que definen la gramática se detallan a continuación, en el fo
 \end{verbatim}
 
 \section{Implementación.}
-\subsection{Parsing}
+\subsection{Lexer}
+La regla del token ID incluye la generación de cualquier cadena alfanumerica. Muchas keyword del lexer, son también cadenas alfanuméricas, por ejemplo: \texttt{TEMPO : 'tempo'}, \texttt{COMPAS : 'compas'}, o cualquiera de las notas musicales (do re mi fa sol la si). \\Para poder distinguir las palabras reservadas del lenguaje de cualquier otra cadena alfanumérica que se presente, se realizó la siguiente distinción en el lexer. 
+\begin{small}
+  \verbatiminput{lexer_id.txt}
+\end{small}
+Se observa que la regla ID chequea que la cadena alfanumérica reconocida sea o no, una palabra reservada. 
+
+\subsection{Parser}
 
 \section{Requerimientos}
 	\begin{itemize}
@@ -213,19 +226,14 @@ La estructura \texttt{repeat(veces)} acepta números o constantes para facilitar
 
 \textbf{Salida:} \texttt{Ocurrió un error en la línea 10: no es válida una repetición de 0 iteraciones}
 
-\newpage
 \section{Decisiones de Diseño}
 A continuación se enumeran las distintas decisiones de diseño que se tomaron en el transcurso del desarrollo del parser.
 \begin{itemize}
 \item Sobre el control de errores en el archivo de entrada se reporta la falla del primer error encontrado
 \item Interpretamos que redefinir una constante es una falla del archivo de entrada, por lo tanto realizar este tipo de acción genera un mensaje de error.
-\item La estructura \texttt{repetir(veces){}} puede aceptar tanto un número literal, como una constante
+\item La estructura \texttt{repetir(veces){}} puede aceptar tanto un número literal, como una constante. El caso particular de \texttt{repetir(0)}, fue considerado un error en el archivo de entrada, por lo tanto, termina su ejecución y muestra un error al detectar este caso.
 \item Los errores semánticos incluyen número de línea para facilitar la corrección por parte del programador/compositor de musileng
-\item El número de track 10 debe ser asignado a percusión según la norma MIDI
 \end{itemize}
-
-\section{Conclusiones}
-conclusiones
 
 \newpage
 \section{Código Fuente}

@@ -1,0 +1,20 @@
+keywords = {
+    'tempo'    : 'TEMPO',
+    'compas'   : 'COMPAS',
+    'const'    : 'CONST',
+    'voz'      : 'VOZ',
+    'repetir'  : 'REPETIR',
+    'nota'     : 'NOTA',
+    'silencio' : 'SILENCIO',
+}
+def t_ID(token):
+    r'[_a-zA-Z][_a-zA-Z0-9]*'
+    if token.value in keywords:   # Check for keywords
+        token.type = keywords.get(token.value)
+    elif token.value in musical_notes:
+        token.type = 'MUSICAL_NOTE'
+    elif token.value in note_values:
+        token.type = 'NOTE_VALUE'
+    else:
+        token.type = 'ID'
+    return token
