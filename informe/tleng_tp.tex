@@ -155,6 +155,33 @@ La regla del token ID incluye la generación de cualquier cadena alfanumerica. M
 Se observa que la regla ID chequea que la cadena alfanumérica reconocida sea o no, una palabra reservada. 
 
 \subsection{Parser}
+Durante la fase de parsing se ejecuta el parser generado mediante la librería PLY.
+Cada producción de la gramática planteada para la resolución del ejercicio se modela mediante un árbol de parsing con exactamente la misma estructura reconocida por el parser. Por ejemplo:\\
+Producción \texttt{note}, la definimos en PLY como:
+\begin{verbatim}
+def p_note(subs):
+    'note : NOTA LPAREN pitch COMMA numeric_value COMMA duration RPAREN SEMICOLON'
+    subs[0] = Note(subs[3], subs[5], subs[7], line=subs.lineno(1))
+\end{verbatim}
+Donde,\texttt{Note} es una clase que expresa el comportamiento de los nodos del tipo \texttt{Note}.
+Por simplicidad y modularidad, existe aproximadamente, una subclase de \texttt{Node} por cada producción de la gramática. Por ejemplo, las producciones 
+silence, duration se corresponden con las subclases de \texttt{Node} Silence y Duration. 
+La libería PLY permite asociar acciones semánticas a cada producción.
+
+\subsection{Análisis Semántico}
+Mediante la clase \texttt{MusicLengSemanticAnalizer} se implementa el control semántico necesario para el lenguaje.
+	\begin{itemize}
+  		\item Chequeo de declaración de constantes: No se puede redeclarar símbolos de constante
+  		\item Chequeo de referencias de constantes no declaradas
+  		\item Control de que los instrumentos válidos estén en el rango de 0 a 127
+  		\item Repeat(0) no aceptado.
+  		\item Chequeo de la correcta duración
+  		\item Octava debe ser un valor de 1 a 9
+	\end{itemize}
+
+\subsection{Encoder}
+Mediante la clase \texttt{SMFEncoder} se recorre el AST generado y se genera el archivo intermedio, en el formato necesario para poder convertirlo a MIDI. Se utilizó un volumen por default de 70. 
+
 
 \section{Requerimientos}
 	\begin{itemize}
