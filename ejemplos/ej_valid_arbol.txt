@@ -1,0 +1,10 @@
+#tempo redonda 60
+#compas 2/2
+const grand_piano = 10;
+voz (grand_piano) 
+{
+  compas
+  {
+    nota(fa, 5, redonda);
+  }
+}

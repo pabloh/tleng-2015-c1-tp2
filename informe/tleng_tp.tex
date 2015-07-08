@@ -13,6 +13,7 @@
 \usepackage{hyperref}
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{booktabs}
+\usepackage{qtree}
 
 %uso: \ponerGrafico{file}{caption}{scale}{label}
 \newcommand{\ponerGrafico}[4]
@@ -155,8 +156,19 @@ Ejemplo: \texttt{./musileng ejemplos/ej1\_input.txt ejemplos/ej1\_output.txt }
 \subsection{Tests}
 Para correr la test suite hay que ejecutar dentro del directorio ./src, donde se encuentra el código fuente, el comando  \texttt{python -m unittest discover tests '*\_test.py'}
 
+\newpage
+\section{Ejemplos de árboles de derivación}
+La entrada a procesar es la siguiente: 
+\begin{small}
+  \verbatiminput{../ejemplos/ej_valid_arbol.txt}
+\end{small}
 
-\section{Ejemplos}
+A continuación se muestra el árbol de derivación resultante. Por motivos de simplicidad en la visualización y para mayor comprensión, el árbol se muestra por partes. En la primera parte se observa la regla principal, musileng y su respectiva derivación. Luego las reglas correspondientes a \texttt{constants} y a \texttt{voices} se muestran en las sucesivas figuras
+\ponerGrafico{tree1_musileng.png}{Árbol de derivación: Primera Parte - Regla: musileng}{0.8}{}
+\ponerGrafico{tree1_constants.png}{Árbol de derivación: Segunda Parte - Regla: constants}{0.9}{}
+\ponerGrafico{tree1_voices.png}{Árbol de derivación: Tercera Parte - Regla: voices}{0.8}{}
+
+\section{Ejemplos de ejecución}
 Presentamos a continuación algunos ejemplos que permiten ver la salida del programa
 \subsection{Entrada válida 1}
 \subsection{Entrada válida 2}
