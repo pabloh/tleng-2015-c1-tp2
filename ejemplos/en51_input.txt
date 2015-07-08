@@ -1,35 +1,32 @@
 // 60 redondas por minuto, osea cada redonda dura 1 seg.
 #tempo redonda 60
-// compas de 2 tiempos y cada tiempo dura 1/2 redonda (1 blanca).
-// entonces cada compas puede tener 1 redonda, blancas, 4 negras, etc.
-#compas 2/2
 
+#compas 2/2
 const octava = 5;
 const grand_piano = 0;
-
 voz (grand_piano)
 {
-	compas
-	{
-		nota(do, octava, blanca);
-		nota(re, octava, blanca);
-	}
-	compas
-	{
-		nota(mi, octava, blanca);
-		nota(fa, octava, blanca);
-	}
-	compas
-	{
-		nota(sol-, octava, negra);
-		nota(sol, octava, negra);
-		nota(sol+, octava, negra);
-		nota(la, octava, negra);
-	}
-	compas
-	{
-		nota(si, octava, blanca);
-		// esto es un silencio que dura una blanca.
-		silencio(blanca);
-	}
+  compas
+  {
+    nota(do, octava, blanca);
+    nota(re, octava, blanca);
+  }
+  compas
+  {
+    nota(mi, octava, blanca);
+    nota(fa, octava, blanca);
+  }
+  compas
+  {
+    nota(sol-, octava, negra);
+    nota(sol, octava, negra);
+    nota(sol+, octava, negra);
+    nota(la, octava, negra);
+  }
+  compas
+  {
+    nota(si, octava, blanca);
+    // esto es un silencio que dura una blanca.
+    silencio(blanca);
+  }
 }
